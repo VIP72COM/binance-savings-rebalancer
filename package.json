@@ -1,0 +1,26 @@
+{
+  "name": "binance-savings-rebalancer",
+  "description": "Binance Savings Rebalancer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "test": "eslint .",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "defi",
+    "binance",
+    "savings",
+    "lending"
+  ],
+  "dependencies": {
+    "eslint": "^7.14.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-security": "^1.4.0"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}
