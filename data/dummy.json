@@ -29,7 +29,7 @@
             "minPurchaseAmount":"0.1"
         }
     ],
-    "fixed": [
+    "locked": [
         {
             "asset":"NEO",
             "type":"CUSTOMIZED_FIXED",

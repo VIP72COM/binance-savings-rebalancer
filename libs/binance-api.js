@@ -1,15 +1,15 @@
 /**
- * Required module
+ * Required modules
  */
 const crypto = require('crypto')
 const https = require('https')
 
-/** Exported class representing a Binance API Client */
+/** Binance API Wrapper */
 module.exports = class BinanceApi {
     /**
      * Create a Binance API Client
-     * @param {string} apiKey - Binance API Key
-     * @param {string} apiSecret - Binance API Secret
+     * @param {String} apiKey - Binance API Key
+     * @param {String} apiSecret - Binance API Secret
      */
     constructor(apiKey, apiSecret) {
         this.apiKey = apiKey
@@ -18,8 +18,8 @@ module.exports = class BinanceApi {
 
     /**
      * Build a query/search string from key/value pairs
-     * @param {object} paramPairs - URL parameters as key/value pairs
-     * @return {string} Query/Search string built from key/value pairs
+     * @param {Object} paramPairs - URL parameters as key/value pairs
+     * @return {String} Query/Search string built from key/value pairs
      */
     buildQueryString(paramPairs) {
         const searchParams = new URLSearchParams()
@@ -33,9 +33,9 @@ module.exports = class BinanceApi {
 
     /**
      * Build a signed URL for API requests
-     * @param {string} pathName - API pathname
-     * @param {object} paramPairs - URL parameters as key/value pairs
-     * @return {object} Signed (new) URL for API requests
+     * @param {String} pathName - API pathname
+     * @param {Object} paramPairs - URL parameters as key/value pairs
+     * @return {Object} Signed (new) URL for API requests
      */
     buildUrl(pathName, paramPairs) {
         const fullUrl = new URL(pathName, this.apiEndpoint)
@@ -49,8 +49,8 @@ module.exports = class BinanceApi {
 
     /**
      * Build a signature based on API Secret and URL query/search string
-     * @param {string} queryString - URL query/search string
-     * @return {string} Signature based on API Secret and URL query/search string
+     * @param {String} queryString - URL query/search string
+     * @return {String} Signature based on API Secret and URL query/search string
      */
     buildSignature(queryString) {
         return crypto
@@ -61,9 +61,9 @@ module.exports = class BinanceApi {
 
     /**
      * Fetch Binance API
-     * @param {string} pathName - API pathname
-     * @param {object} paramPairs - URL parameters as key/value pairs
-     * @param {object} requestOptions - Request options as key/value pairs
+     * @param {String} pathName - API pathname
+     * @param {Object} paramPairs - URL parameters as key/value pairs
+     * @param {Object} requestOptions - Request options as key/value pairs
      * @return {Promise} A promise to fetchApi
      */
     async fetchApi(pathName, paramPairs= {}, requestOptions = { method: 'GET' }) {
@@ -96,7 +96,7 @@ module.exports = class BinanceApi {
 
     /**
      * Return Binance API endpoint
-     * @return {string} Binance API endpoint
+     * @return {String} Binance API endpoint
      */
     get apiEndpoint() {
         return 'https://api.binance.com'
