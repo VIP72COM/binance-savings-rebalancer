@@ -1,10 +1,13 @@
+/**
+ * Required modules
+ */
 const helpers = require('./libs/helpers')
 const binanceApi = require('./libs/binance-api')
 const binanceApiClient = new binanceApi(process.env['API_KEY'], process.env['API_SECRET'])
 
-const Fixed = require('./libs/fixed')
+const Locked = require('./libs/locked')
 const Account = require('./libs/account')
-const Activity = require('./libs/activity')
+const Activities = require('./libs/activities')
 const Flexible = require('./libs/flexible')
 
 ;(async () => {
@@ -12,27 +15,35 @@ const Flexible = require('./libs/flexible')
     const accountBalances = await account.getBalances()
     const flexibleBalances = accountBalances.filter(x => x['asset'].startsWith('LD'))
 
-    /* ACTIVITY */
-    const activity = new Activity(binanceApiClient, accountBalances)
-    activity.getAvailableProducts().then(async products => {
-        const redeemProducts = helpers.filterEqualAssets(flexibleBalances, products)
+    /**
+     * Activities
+     */
+    const activities = new Activities(binanceApiClient, accountBalances)
+    activities.getAvailableProjects().then(async projects => {
+        const redeemProjects = helpers.filterEqualAssets(flexibleBalances, projects)
 
-        redeemProducts && await flexible.redeemProducts(redeemProducts)
+        redeemProjects && await flexible.redeemProducts(redeemProjects)
 
-        await activity.purchaseProducts(products)
+        await activities.purchaseProjects(projects)
     })
 
-    /* FIXED */
-    const fixed = new Fixed(binanceApiClient, accountBalances)
-    fixed.getAvailableProducts().then(async products => {
-        const redeemProducts = helpers.filterEqualAssets(flexibleBalances, products)
+    /**
+     * Locked Savings
+     */
+    const locked = new Locked(binanceApiClient, accountBalances)
+    locked.getAvailableProjects().then(async projects => {
+        const redeemProjects = helpers.filterEqualAssets(flexibleBalances, projects)
 
-        redeemProducts && await flexible.redeemProducts(redeemProducts)
+        redeemProjects && await flexible.redeemProducts(redeemProjects)
 
-        await fixed.purchaseProducts(products)
+        await locked.purchaseProjects(projects)
     })
 
-    /* FLEXIBLE */
+    /**
+     * Flexible Savings
+     */
     const flexible = new Flexible(binanceApiClient, accountBalances, flexibleBalances)
-    flexible.getAvailableProducts().then(products => flexible.purchaseProducts(products))
+    flexible.getAvailableProducts().then(async products => {
+        await flexible.purchaseProducts(products)
+    })
 })()
